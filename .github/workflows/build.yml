@@ -1,0 +1,27 @@
+name: build-exe
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - run: pip install pyinstaller requests openpyxl
+
+      - run: pyinstaller -F main.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: exe
+          path: dist/main.exe
+
